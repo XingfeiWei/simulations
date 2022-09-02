@@ -1,0 +1,170 @@
+
+    variable name index nve1
+    log log.${name}
+# ----------------- Init Section -----------------
+
+    units real
+    atom_style full
+    bond_style hybrid harmonic
+    angle_style hybrid harmonic
+    dihedral_style hybrid opls
+    pair_style hybrid lj/cut/coul/cut 10.0 10.0
+    pair_modify mix geometric
+    special_bonds lj/coul 0.0 0.0 0.5
+    #kspace_style pppm 0.0001
+
+# ----------------- Atom Definition Section -----------------
+
+read_data data.nvt300K2
+
+    pair_coeff 1 1 lj/cut/coul/cut 0.175 3.905
+    pair_coeff 2 2 lj/cut/coul/cut 0.118 3.905
+    pair_coeff 3 3 lj/cut/coul/cut 0.08 3.85
+    bond_coeff 1 harmonic 260.0 1.526
+    bond_coeff 2 harmonic 260.0 1.526
+    bond_coeff 3 harmonic 260.0 1.526
+    bond_coeff 4 harmonic 260.0 1.526
+    bond_coeff 5 harmonic 260.0 1.526
+    bond_coeff 6 harmonic 260.0 1.526
+    angle_coeff 1 harmonic 63.0 112.4
+    angle_coeff 2 harmonic 63.0 112.4
+    angle_coeff 3 harmonic 63.0 112.4
+    angle_coeff 4 harmonic 63.0 112.4
+    angle_coeff 5 harmonic 63.0 112.4
+    angle_coeff 6 harmonic 63.0 112.4
+    angle_coeff 7 harmonic 63.0 112.4
+    angle_coeff 8 harmonic 63.0 111.5
+    angle_coeff 9 harmonic 63.0 112.4
+    angle_coeff 10 harmonic 63.0 111.5
+    angle_coeff 11 harmonic 63.0 111.5
+    angle_coeff 12 harmonic 63.0 111.5
+    dihedral_coeff 1 opls -2.5 1.25 3.1 0.0
+    dihedral_coeff 2 opls -2.5 1.25 3.1 0.0
+    dihedral_coeff 3 opls -3.4 1.25 3.1 0.0
+    dihedral_coeff 4 opls -3.4 1.25 3.1 0.0
+    dihedral_coeff 5 opls -3.4 1.25 3.1 0.0
+    dihedral_coeff 6 opls -3.4 1.25 3.1 0.0
+    dihedral_coeff 7 opls -3.4 1.25 3.1 0.0
+    dihedral_coeff 8 opls -2.5 1.25 3.1 0.0
+    dihedral_coeff 9 opls -3.4 1.25 3.1 0.0
+
+# ----------------- Charges Section -----------------
+
+    set type 1 charge 0.0
+    set type 2 charge 0.0
+    set type 3 charge 0.0
+
+# ----------------- Run Section -----------------
+variable vtimpstep equal 1
+variable Pdamp  equal  ${vtimpstep}*1000
+variable Tdamp  equal  ${vtimpstep}*100
+
+#####
+
+region rgin block INF INF INF INF  72.8 82.8  units box
+region rgout1 block INF INF INF INF   14.9891991  20.4891991  units box
+region rgout2 block INF INF INF INF  135.1108009 140.6108009 units box
+region rfree block INF INF INF INF 14.9891991  140.6108009 units box
+
+region rflux1 block INF INF INF INF 23.4891991  69.8   units box
+region rflux2 block INF INF INF INF   85.8    132.1108009 units box
+
+
+group gin dynamic all region rgin every 100
+group gout1   dynamic all region rgout1 every 100
+group gout2   dynamic all region rgout2 every 100
+
+group gflux1 dynamic all region rflux1 every 10
+group gflux2 dynamic all region rflux2 every 10
+#####
+restart 100000 res.3 res.4
+dump 1 all xyz 100000 ${name}.xyz
+dump_modify 1 element C C C
+
+neighbor    2.5 bin
+neigh_modify  delay 0 every 50 check no
+
+timestep ${vtimpstep}  
+thermo 1000
+
+compute c1 all com
+thermo_style custom step temp pe etotal press c_c1[3] density vol lx ly lz
+
+fix m1 all momentum 1 linear 1 1 1
+fix NVT all nvt temp 300 300 ${Tdamp} 
+run     50000
+unfix m1
+unfix NVT
+
+fix NVT all nvt temp 300.00 300.00 ${Tdamp}
+run 500000
+unfix NVT
+
+fix NVE all nve
+compute ke0 all ke/atom
+variable temp0 atom c_ke0/0.00297881
+compute Tz all chunk/atom bin/1d z lower 2.0
+fix fix9 all ave/chunk 1 10000 10000 Tz v_temp0 file temp${name}
+fix fix10 gin langevin 315.0 315.0 50.0 18070221 tally yes
+fix fix11 gout1 langevin 285.0 285.0 50.0 1807222 tally yes
+fix fix15 gout2 langevin 285.0 285.0 50.0 1807223 tally yes
+
+compute ke1 gflux1 ke/atom
+compute t1 gflux1 temp
+compute pe1 gflux1 pe/atom
+compute st1 gflux1 stress/atom t1
+compute flux1 gflux1 heat/flux ke1 pe1 st1
+variable Jz1 equal c_flux1[3]/vol
+compute stk1 gflux1 stress/atom t1 ke
+compute stp1 gflux1 stress/atom t1 pair
+compute stb1 gflux1 stress/atom t1 bond
+compute sta1 gflux1 stress/atom t1 angle
+compute std1 gflux1 stress/atom t1 dihedral
+compute fluxk1 gflux1 heat/flux ke1 pe1 stk1
+compute fluxp1 gflux1 heat/flux ke1 pe1 stp1
+compute fluxb1 gflux1 heat/flux ke1 pe1 stb1
+compute fluxa1 gflux1 heat/flux ke1 pe1 sta1
+compute fluxd1 gflux1 heat/flux ke1 pe1 std1
+variable Jzk1 equal c_fluxk1[3]/vol
+variable Jzp1 equal c_fluxp1[3]/vol
+variable Jzb1 equal c_fluxb1[3]/vol
+variable Jza1 equal c_fluxa1[3]/vol
+variable Jzd1 equal c_fluxd1[3]/vol
+
+compute ke2 gflux2 ke/atom
+compute t2 gflux2 temp
+compute pe2 gflux2 pe/atom
+compute st2 gflux2 stress/atom t2
+compute flux2 gflux2 heat/flux ke2 pe2 st2
+variable Jz2 equal c_flux2[3]/vol
+compute stk2 gflux2 stress/atom t2 ke
+compute stp2 gflux2 stress/atom t2 pair
+compute stb2 gflux2 stress/atom t2 bond
+compute sta2 gflux2 stress/atom t2 angle
+compute std2 gflux2 stress/atom t2 dihedral
+compute fluxk2 gflux2 heat/flux ke2 pe2 stk2
+compute fluxp2 gflux2 heat/flux ke2 pe2 stp2
+compute fluxb2 gflux2 heat/flux ke2 pe2 stb2
+compute fluxa2 gflux2 heat/flux ke2 pe2 sta2
+compute fluxd2 gflux2 heat/flux ke2 pe2 std2
+variable Jzk2 equal c_fluxk2[3]/vol
+variable Jzp2 equal c_fluxp2[3]/vol
+variable Jzb2 equal c_fluxb2[3]/vol
+variable Jza2 equal c_fluxa2[3]/vol
+variable Jzd2 equal c_fluxd2[3]/vol
+
+compute kea all ke
+compute pea all pe
+fix fixke all ave/time 1 1000 1000 c_kea c_pea file keall${name}.data mode scalar
+fix fixflux1 all ave/time 1 1000 1000 v_Jz1 v_Jzk1 v_Jzp1 v_Jzb1 v_Jza1 v_Jzd1 file flux1${name}.data mode scalar
+fix fixflux2 all ave/time 1 1000 1000 v_Jz2 v_Jzk2 v_Jzp2 v_Jzb2 v_Jza2 v_Jzd2 file flux2${name}.data mode scalar
+
+log heatflux${name}.log
+thermo 1000
+thermo_style custom step temp f_fix10 f_fix11 f_fix15 
+thermo_modify flush yes
+run 10000000
+unfix NVE 
+
+write_data data.${name}
+write_restart res.${name} 
