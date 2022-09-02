@@ -1,0 +1,91 @@
+#solvation the SQ100 model 800K D=80.0 30ns
+variable name index T800KR5
+variable Tset equal 800
+variable dielec equal 80.0 
+variable rand1 equal 2206217
+variable rand2 equal 2206218
+log             log.${name}
+boundary        p p p
+
+units           real
+atom_style      full 
+pair_style      hybrid/overlay dpd ${Tset} 10.0 ${rand1}  coul/cut 10.0 lj/cut 10.0 
+bond_style      harmonic
+
+read_data       ../../data.SQ2DL100_R5
+#read_restart res.initialize
+
+comm_modify     mode single vel yes
+
+mass 1	41.073	#CH2-CH-CH2				
+mass 2	17.031	#NH3	charge +1
+mass 3	42.081	#CH2-CH2-CH2				
+mass 4	1045 #Au 
+mass 5	1045 #Au 
+
+pair_coeff  1 1 dpd  25 4.5
+pair_coeff  1 2 dpd  50 4.5
+pair_coeff  1 3 dpd  30 4.5
+#pair_coeff  1 4 dpd  10  4.5 # Au with PAH CH2-CH-CH2
+#pair_coeff  1 5 dpd  10  4.5 # Au with PAH CH2-CH-CH2
+pair_coeff  2 2 dpd  75 4.5 # NH3 with NH3
+pair_coeff  2 3 dpd  50 4.5
+#pair_coeff  2 4 dpd  10  4.5 # Au with PAH NH3
+#pair_coeff  2 5 dpd  10  4.5 # Au with PAH NH3  
+pair_coeff  3 3 dpd  25 4.5
+#pair_coeff  3 4 dpd  10 4.5 # Au with PAH CH2-CH2-CH2
+#pair_coeff  3 5 dpd  10 4.5 # Au with PAH CH2-CH2-CH2
+pair_coeff  4 4 lj/cut 5.29 2.951  #morse 10.95375740  1.5830  3.02420000  8.0  Au
+pair_coeff  4 5 lj/cut 5.29 2.951  #morse 10.95375740  1.5830  3.02420000  8.0  Au
+pair_coeff  5 5 lj/cut 5.29 2.951  #morse 10.95375740  1.5830  3.02420000  8.0  Au
+
+pair_coeff  1 4 lj/cut 0.18 3.42 # Au with PAH CH2-CH-CH2
+pair_coeff  2 4 lj/cut 0.081424812 3.0925 # Au with PAH NH3 
+pair_coeff  3 4 lj/cut 0.18 3.42 # Au with PAH CH2-CH2-CH2
+pair_coeff  1 5 lj/cut 0.18 3.42 # Au with PAH CH2-CH-CH2
+pair_coeff  2 5 lj/cut 0.081424812 3.0925 # Au with PAH NH3 
+pair_coeff  3 5 lj/cut 0.18 3.42 # Au with PAH CH2-CH2-CH2
+pair_coeff      * * coul/cut  10.0
+
+bond_coeff      1 225.0 3.0 
+bond_coeff      2 225.0 2.6
+
+neighbor        2.5 bin
+neigh_modify    every 1 delay 0 check no once no
+
+variable vtimpstep equal 1 
+variable Pdamp  equal  ${vtimpstep}*1000
+variable Tdamp  equal  ${vtimpstep}*100
+timestep ${vtimpstep}  
+
+restart 500000 res.1 res.2
+
+group PAH type 1 2 3
+group Au type 4 5
+dump 1 all xyz 500000 ${name}.xyz
+dump_modify 1 element C N C Au Pt
+dump d1 PAH custom 500000 ${name}pah.txt id mol x y z ix iy iz 
+dump d2 Au  custom 500000 ${name}au.txt id mol x y z ix iy iz 
+
+variable        totEnergy equal pe+ke
+thermo          1000 
+thermo_style    custom step temp press pe ke v_totEnergy
+#thermo_modify   format float %24.16f
+
+dielectric ${dielec}
+
+region mybox block INF INF INF INF 0 100 
+
+#write_data data.initialize
+
+fix wall PAH wall/region mybox harmonic 20.0 0.0 5.0
+fix NVE0 PAH nve
+fix LAN0 PAH langevin ${Tset} ${Tset} ${Tdamp}  ${rand2}
+run     30000000
+unfix LAN0
+unfix NVE0
+unfix wall
+
+write_data data.${name}
+write_restart res.${name}
+
