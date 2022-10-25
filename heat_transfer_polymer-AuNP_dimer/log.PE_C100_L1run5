@@ -1,0 +1,592 @@
+# ----------------- Init Section -----------------
+
+    units real
+    atom_style full
+    bond_style hybrid harmonic
+    angle_style hybrid harmonic
+    dihedral_style hybrid opls
+    pair_style hybrid lj/cut/coul/cut 10.0 10.0 lj/cut 10.0 morse 8.0
+    pair_modify mix arithmetic
+    special_bonds lj/coul 0.0 0.0 0.5
+  #  kspace_style pppm 0.0001
+
+# ----------------- Atom Definition Section -----------------
+
+#read_data data.dimerPE100relax5
+read_restart res.PE_C100_L1run4
+  restoring atom style full from restart
+  orthogonal box = (-500.00000 -500.00000 -500.00000) to (500.00000 500.00000 500.00000)
+  2 by 2 by 2 MPI processor grid
+  restoring pair style hybrid from restart
+  restoring bond style hybrid from restart
+  restoring angle style hybrid from restart
+  restoring dihedral style hybrid from restart
+  4536 atoms
+  301 bonds
+  600 angles
+  891 dihedrals
+     4 = max # of 1-2 neighbors
+     6 = max # of 1-3 neighbors
+    12 = max # of 1-4 neighbors
+    16 = max # of special neighbors
+  special bonds CPU = 0.001 seconds
+  read_restart CPU = 0.006 seconds
+# ----------------- Settings Section -----------------
+
+    pair_coeff 1 1 lj/cut/coul/cut 0.066 3.5
+    pair_coeff 2 2 lj/cut/coul/cut 0.066 3.5
+    pair_coeff 3 3 lj/cut/coul/cut 0.03 2.5
+    pair_coeff 4 4 lj/cut/coul/cut 0.25 3.55
+    pair_coeff 5 5 lj/cut/coul/cut 0.0 0.0
+    pair_coeff 6 6 lj/cut/coul/cut 0.066 3.5
+    pair_coeff 7 7 lj/cut 5.29 2.951  #Au-other LJ 0.039 2.935  #Au-Au morse 10.954 1.583 3.024 8
+    pair_coeff 4 7 morse 8.763 1.47 2.65 8    #Au-S
+pair_coeff  1   7   lj/cut 0.050734604 3.2175
+pair_coeff  2   7   lj/cut 0.050734604 3.2175
+pair_coeff  3   7   lj/cut 0.034205263 2.7175
+pair_coeff  5   7   lj/cut 0   1.4675
+pair_coeff  6   7   lj/cut 0.050734604 3.2175
+
+
+    bond_coeff 1 harmonic 268.0 1.529
+    bond_coeff 2 harmonic 268.0 1.529
+    bond_coeff 3 harmonic 268.0 1.529
+    bond_coeff 4 harmonic 268.0 1.529
+    bond_coeff 5 harmonic 268.0 1.529
+    bond_coeff 6 harmonic 268.0 1.529
+    bond_coeff 7 harmonic 268.0 1.529
+    bond_coeff 8 harmonic 268.0 1.529
+    bond_coeff 9 harmonic 268.0 1.529
+    bond_coeff 10 harmonic 222.0 1.81
+    bond_coeff 11 harmonic 222.0 1.81
+    bond_coeff 12 harmonic 222.0 1.81
+    bond_coeff 13 harmonic 340.0 1.09
+    bond_coeff 14 harmonic 340.0 1.09
+    bond_coeff 15 harmonic 340.0 1.09
+    bond_coeff 16 harmonic 274.0 1.336
+    angle_coeff 1 harmonic 58.35 112.7
+    angle_coeff 2 harmonic 58.35 112.7
+    angle_coeff 3 harmonic 58.35 112.7
+    angle_coeff 4 harmonic 58.35 112.7
+    angle_coeff 5 harmonic 58.35 112.7
+    angle_coeff 6 harmonic 58.35 112.7
+    angle_coeff 7 harmonic 58.35 112.7
+    angle_coeff 8 harmonic 58.35 112.7
+    angle_coeff 9 harmonic 58.35 112.7
+    angle_coeff 10 harmonic 58.35 112.7
+    angle_coeff 11 harmonic 58.35 112.7
+    angle_coeff 12 harmonic 58.35 112.7
+    angle_coeff 13 harmonic 58.35 112.7
+    angle_coeff 14 harmonic 58.35 112.7
+    angle_coeff 15 harmonic 58.35 112.7
+    angle_coeff 16 harmonic 58.35 112.7
+    angle_coeff 17 harmonic 58.35 112.7
+    angle_coeff 18 harmonic 58.35 112.7
+    angle_coeff 19 harmonic 58.35 112.7
+    angle_coeff 20 harmonic 58.35 112.7
+    angle_coeff 21 harmonic 58.35 112.7
+    angle_coeff 22 harmonic 58.35 112.7
+    angle_coeff 23 harmonic 58.35 112.7
+    angle_coeff 24 harmonic 58.35 112.7
+    angle_coeff 25 harmonic 58.35 112.7
+    angle_coeff 26 harmonic 58.35 112.7
+    angle_coeff 27 harmonic 58.35 112.7
+    angle_coeff 28 harmonic 50.0 108.6
+    angle_coeff 29 harmonic 50.0 108.6
+    angle_coeff 30 harmonic 50.0 108.6
+    angle_coeff 31 harmonic 50.0 108.6
+    angle_coeff 32 harmonic 50.0 108.6
+    angle_coeff 33 harmonic 50.0 108.6
+    angle_coeff 34 harmonic 50.0 108.6
+    angle_coeff 35 harmonic 50.0 108.6
+    angle_coeff 36 harmonic 50.0 108.6
+    angle_coeff 37 harmonic 33.0 107.8
+    angle_coeff 38 harmonic 33.0 107.8
+    angle_coeff 39 harmonic 33.0 107.8
+    angle_coeff 40 harmonic 35.0 109.5
+    angle_coeff 41 harmonic 35.0 109.5
+    angle_coeff 42 harmonic 35.0 109.5
+    angle_coeff 43 harmonic 37.5 110.7
+    angle_coeff 44 harmonic 37.5 110.7
+    angle_coeff 45 harmonic 37.5 110.7
+    angle_coeff 46 harmonic 37.5 110.7
+    angle_coeff 47 harmonic 37.5 110.7
+    angle_coeff 48 harmonic 37.5 110.7
+    angle_coeff 49 harmonic 37.5 110.7
+    angle_coeff 50 harmonic 37.5 110.7
+    angle_coeff 51 harmonic 37.5 110.7
+    angle_coeff 52 harmonic 35.0 92.07
+    angle_coeff 53 harmonic 44.0 96.0
+    angle_coeff 54 harmonic 44.0 96.0
+    angle_coeff 55 harmonic 44.0 96.0
+    dihedral_coeff 1 opls 1.711 -0.5 0.663 0.0
+    dihedral_coeff 2 opls 1.711 -0.5 0.663 0.0
+    dihedral_coeff 3 opls 1.711 -0.5 0.663 0.0
+    dihedral_coeff 4 opls 1.711 -0.5 0.663 0.0
+    dihedral_coeff 5 opls 1.711 -0.5 0.663 0.0
+    dihedral_coeff 6 opls 1.711 -0.5 0.663 0.0
+    dihedral_coeff 7 opls 1.711 -0.5 0.663 0.0
+    dihedral_coeff 8 opls 1.711 -0.5 0.663 0.0
+    dihedral_coeff 9 opls 1.711 -0.5 0.663 0.0
+    dihedral_coeff 10 opls 1.711 -0.5 0.663 0.0
+    dihedral_coeff 11 opls 1.711 -0.5 0.663 0.0
+    dihedral_coeff 12 opls 1.711 -0.5 0.663 0.0
+    dihedral_coeff 13 opls 1.711 -0.5 0.663 0.0
+    dihedral_coeff 14 opls 1.711 -0.5 0.663 0.0
+    dihedral_coeff 15 opls 1.711 -0.5 0.663 0.0
+    dihedral_coeff 16 opls 1.711 -0.5 0.663 0.0
+    dihedral_coeff 17 opls 1.711 -0.5 0.663 0.0
+    dihedral_coeff 18 opls 1.711 -0.5 0.663 0.0
+    dihedral_coeff 19 opls 1.711 -0.5 0.663 0.0
+    dihedral_coeff 20 opls 1.711 -0.5 0.663 0.0
+    dihedral_coeff 21 opls 1.711 -0.5 0.663 0.0
+    dihedral_coeff 22 opls 1.711 -0.5 0.663 0.0
+    dihedral_coeff 23 opls 1.711 -0.5 0.663 0.0
+    dihedral_coeff 24 opls 1.711 -0.5 0.663 0.0
+    dihedral_coeff 25 opls 1.711 -0.5 0.663 0.0
+    dihedral_coeff 26 opls 1.711 -0.5 0.663 0.0
+    dihedral_coeff 27 opls 1.711 -0.5 0.663 0.0
+    dihedral_coeff 28 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 29 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 30 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 31 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 32 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 33 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 34 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 35 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 36 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 37 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 38 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 39 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 40 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 41 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 42 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 43 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 44 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 45 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 46 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 47 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 48 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 49 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 50 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 51 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 52 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 53 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 54 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 55 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 56 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 57 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 58 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 59 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 60 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 61 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 62 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 63 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 64 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 65 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 66 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 67 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 68 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 69 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 70 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 71 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 72 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 73 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 74 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 75 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 76 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 77 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 78 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 79 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 80 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 81 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 82 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 83 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 84 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 85 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 86 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 87 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 88 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 89 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 90 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 91 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 92 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 93 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 94 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 95 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 96 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 97 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 98 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 99 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 100 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 101 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 102 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 103 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 104 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 105 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 106 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 107 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 108 opls 1.3 -0.05 0.2 0.0
+    dihedral_coeff 109 opls 1.262 -0.198 0.465 0.0
+    dihedral_coeff 110 opls 1.262 -0.198 0.465 0.0
+    dihedral_coeff 111 opls 1.262 -0.198 0.465 0.0
+    dihedral_coeff 112 opls 1.262 -0.198 0.465 0.0
+    dihedral_coeff 113 opls 1.262 -0.198 0.465 0.0
+    dihedral_coeff 114 opls 1.262 -0.198 0.465 0.0
+    dihedral_coeff 115 opls 1.262 -0.198 0.465 0.0
+    dihedral_coeff 116 opls 1.262 -0.198 0.465 0.0
+    dihedral_coeff 117 opls 1.262 -0.198 0.465 0.0
+    dihedral_coeff 118 opls 1.262 -0.198 0.465 0.0
+    dihedral_coeff 119 opls 1.262 -0.198 0.465 0.0
+    dihedral_coeff 120 opls 1.262 -0.198 0.465 0.0
+    dihedral_coeff 121 opls 1.262 -0.198 0.465 0.0
+    dihedral_coeff 122 opls 1.262 -0.198 0.465 0.0
+    dihedral_coeff 123 opls 1.262 -0.198 0.465 0.0
+    dihedral_coeff 124 opls 1.262 -0.198 0.465 0.0
+    dihedral_coeff 125 opls 1.262 -0.198 0.465 0.0
+    dihedral_coeff 126 opls 1.262 -0.198 0.465 0.0
+    dihedral_coeff 127 opls 1.262 -0.198 0.465 0.0
+    dihedral_coeff 128 opls 1.262 -0.198 0.465 0.0
+    dihedral_coeff 129 opls 1.262 -0.198 0.465 0.0
+    dihedral_coeff 130 opls 1.262 -0.198 0.465 0.0
+    dihedral_coeff 131 opls 1.262 -0.198 0.465 0.0
+    dihedral_coeff 132 opls 1.262 -0.198 0.465 0.0
+    dihedral_coeff 133 opls 1.262 -0.198 0.465 0.0
+    dihedral_coeff 134 opls 1.262 -0.198 0.465 0.0
+    dihedral_coeff 135 opls 1.262 -0.198 0.465 0.0
+    dihedral_coeff 136 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 137 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 138 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 139 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 140 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 141 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 142 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 143 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 144 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 145 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 146 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 147 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 148 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 149 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 150 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 151 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 152 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 153 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 154 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 155 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 156 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 157 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 158 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 159 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 160 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 161 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 162 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 163 opls 0.0 0.0 0.452 0.0
+    dihedral_coeff 164 opls 0.0 0.0 0.452 0.0
+    dihedral_coeff 165 opls 0.0 0.0 0.452 0.0
+    dihedral_coeff 166 opls 0.0 0.0 0.452 0.0
+    dihedral_coeff 167 opls 0.0 0.0 0.452 0.0
+    dihedral_coeff 168 opls 0.0 0.0 0.452 0.0
+    dihedral_coeff 169 opls 0.0 0.0 0.452 0.0
+    dihedral_coeff 170 opls 0.0 0.0 0.452 0.0
+    dihedral_coeff 171 opls 0.0 0.0 0.452 0.0
+    dihedral_coeff 172 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 173 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 174 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 175 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 176 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 177 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 178 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 179 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 180 opls 0.0 0.0 0.3 0.0
+    dihedral_coeff 181 opls -0.759 -0.282 0.68 0.0
+    dihedral_coeff 182 opls -0.759 -0.282 0.68 0.0
+    dihedral_coeff 183 opls -0.759 -0.282 0.68 0.0
+    dihedral_coeff 184 opls -0.759 -0.282 0.68 0.0
+    dihedral_coeff 185 opls -0.759 -0.282 0.68 0.0
+    dihedral_coeff 186 opls -0.759 -0.282 0.68 0.0
+    dihedral_coeff 187 opls -0.759 -0.282 0.68 0.0
+    dihedral_coeff 188 opls -0.759 -0.282 0.68 0.0
+    dihedral_coeff 189 opls -0.759 -0.282 0.68 0.0
+    dihedral_coeff 190 opls 0.0 0.0 0.48 0.0
+    dihedral_coeff 191 opls 0.0 0.0 0.48 0.0
+    dihedral_coeff 192 opls 0.0 0.0 0.48 0.0
+
+# ----------------- Run Section -----------------
+
+restart 100000 res.1L1 res.2L1
+dump 1 all xyz 500000 ${name}.xyz
+dump 1 all xyz 500000 PE_C100_L1run5.xyz
+dump_modify 1 element C C H S H C Au
+
+variable vtimpstep equal 0.25
+variable Pdamp  equal  ${vtimpstep}*1000
+variable Pdamp  equal  0.25*1000
+variable Tdamp  equal  ${vtimpstep}*100
+variable Tdamp  equal  0.25*100
+timestep ${vtimpstep}
+timestep 0.25
+
+neighbor           2.5 bin
+neigh_modify every 1 delay 0 check yes
+
+group polymer molecule 1
+302 atoms in group polymer
+group NP1 molecule 2
+2117 atoms in group NP1
+group NP2 molecule 3
+2117 atoms in group NP2
+
+compute c4 polymer gyration
+variable Rg equal c_c4
+
+compute c1 NP1 com
+compute c11 NP2 com
+
+thermo 10000
+thermo_style custom step temp epair pe etotal c_c1[1] c_c1[2]  c_c1[3] c_c11[1] c_c11[2]  c_c11[3] v_Rg
+write_data data.PE_C100_L1run4
+Neighbor list info ...
+  update every 1 steps, delay 0 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 12.5
+  ghost atom cutoff = 12.5
+  binsize = 6.25, bins = 160 160 160
+  4 neighbor lists, perpetual/occasional/extra = 4 0 0
+  (1) pair lj/cut/coul/cut, perpetual, skip from (4)
+      attributes: half, newton on
+      pair build: skip
+      stencil: none
+      bin: none
+  (2) pair lj/cut, perpetual, skip from (4)
+      attributes: half, newton on
+      pair build: skip
+      stencil: none
+      bin: none
+  (3) pair morse, perpetual, skip from (4)
+      attributes: half, newton on
+      pair build: skip
+      stencil: none
+      bin: none
+  (4) neighbor class addition, perpetual
+      attributes: half, newton on
+      pair build: half/bin/newton
+      stencil: half/bin/3d/newton
+      bin: standard
+fix NVE0 all nve
+fix LAN all langevin 300 300 ${Tdamp}  ${rand}+2
+fix LAN all langevin 300 300 25  ${rand}+2
+fix LAN all langevin 300 300 25  21091133+2
+run 1000000
+Neighbor list info ...
+  update every 1 steps, delay 0 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 12.5
+  ghost atom cutoff = 12.5
+  binsize = 6.25, bins = 160 160 160
+  4 neighbor lists, perpetual/occasional/extra = 4 0 0
+  (1) pair lj/cut/coul/cut, perpetual, skip from (4)
+      attributes: half, newton on
+      pair build: skip
+      stencil: none
+      bin: none
+  (2) pair lj/cut, perpetual, skip from (4)
+      attributes: half, newton on
+      pair build: skip
+      stencil: none
+      bin: none
+  (3) pair morse, perpetual, skip from (4)
+      attributes: half, newton on
+      pair build: skip
+      stencil: none
+      bin: none
+  (4) neighbor class addition, perpetual
+      attributes: half, newton on
+      pair build: half/bin/newton
+      stencil: half/bin/3d/newton
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 18.22 | 18.64 | 19.7 Mbytes
+Step Temp E_pair PotEng TotEng c_c1[1] c_c1[2] c_c1[3] c_c11[1] c_c11[2] c_c11[3] v_Rg 
+215600000    309.82616   -159375.19   -159071.88   -154883.65    4.7154296  -0.32078557   -4.1422805    160.41706    1.9567356    1.0573254    34.621443 
+215610000    299.05797   -159509.94   -159244.57   -155201.91    4.7228657  -0.34030917    -4.128112    160.41572    1.9424094    1.0540868    34.719061 
+215620000    293.49683   -159603.11    -159311.9   -155344.41    4.7194835  -0.34285826   -4.1362999    160.41929    1.9443304    1.0471558    34.637277 
+215630000     301.4503   -159521.46   -159238.83   -155163.83    4.7221203  -0.35677346   -4.1355423    160.43174    1.9401852    1.0456116    34.806356 
+215640000    301.97261   -159576.96   -159278.34   -155196.28     4.742177  -0.36801129   -4.1394928    160.44108    1.9486004    1.0423086     34.78394 
+215650000    294.57827   -159636.06   -159366.26   -155384.15    4.7438381  -0.35431062   -4.1395117    160.45095    1.9378755    1.0461554    34.744985 
+215660000    298.10792   -159655.42   -159363.63   -155333.82    4.7421807  -0.34870651   -4.1488184    160.44609    1.9363269    1.0360531    34.674113 
+215670000    299.85502   -159538.26   -159265.42   -155211.99    4.7595753  -0.34655252   -4.1610025    160.43891    1.9323377    1.0395575     34.59498 
+215680000    300.50549   -159531.77   -159247.14   -155184.91    4.7578336  -0.36419339   -4.1502701    160.43454    1.9336597    1.0343647    34.547093 
+215690000    302.65546   -159557.14   -159283.27   -155191.98    4.7630894  -0.37297862   -4.1615551    160.43318    1.9247789    1.0439209    34.609652 
+215700000    304.18079   -159500.84   -159227.62   -155115.72    4.7806457  -0.36920745   -4.1645944      160.425    1.9242024    1.0495566    34.865093 
+215710000     304.8107   -159646.88   -159373.03    -155252.6    4.7716048  -0.37306743   -4.1492166    160.42415    1.9230386    1.0515347    35.058606 
+215720000    299.61976   -159542.77   -159269.83   -155219.58    4.7623599  -0.36668337   -4.1428871    160.42428    1.9282087    1.0504518    35.077675 
+215730000    303.20306   -159540.88   -159250.21   -155151.52    4.7481845   -0.3643098    -4.138115    160.42392    1.9333465     1.057442    35.035871 
+215740000    301.47854   -159601.55   -159325.15   -155249.77    4.7543932  -0.36026072   -4.1278023    160.42371    1.9215941    1.0545809    35.104285 
+215750000    297.52554   -159531.51   -159271.58   -155249.64    4.7515222  -0.35649282   -4.1332707    160.42813    1.9232185    1.0671326    35.127504 
+215760000    295.65527   -159588.46   -159305.46    -155308.8    4.7650665  -0.36719129   -4.1334883    160.43622    1.9296341     1.068064    35.224048 
+215770000    297.23674   -159547.33   -159282.23   -155264.19    4.7592062  -0.37785445   -4.1247618    160.44032    1.9443362    1.0651588    34.981115 
+215780000    302.49927   -159498.31   -159219.68    -155130.5    4.7756938  -0.37789759   -4.1254333    160.44678    1.9509297    1.0687977    35.084524 
+215790000    308.17992   -159510.94   -159238.44   -155072.47    4.7664533  -0.37859044   -4.1281963    160.46044    1.9446842    1.0655457    35.024459 
+215800000    299.66891   -159564.39   -159280.22   -155229.31    4.7553124  -0.38013329   -4.1274215      160.461    1.9537652    1.0593112    35.106125 
+215810000    309.05336   -159621.74   -159344.91   -155167.13    4.7566744  -0.35755434   -4.1304756     160.4764    1.9608358    1.0439328    35.103432 
+215820000    292.41144   -159610.79   -159331.04   -155378.23    4.7503792  -0.37254324   -4.1404998    160.47164     1.960443    1.0545365    35.000386 
+215830000    302.69082   -159522.35   -159249.96    -155158.2    4.7459708  -0.36660955   -4.1510611    160.47174    1.9631441    1.0416507    34.847944 
+215840000    300.79519   -159604.89   -159317.17   -155251.03     4.754885  -0.36204382   -4.1438515     160.4578    1.9718717    1.0507093    34.668906 
+215850000    298.60961    -159522.5   -159222.96   -155186.36    4.7397531  -0.37062529   -4.1426571     160.4693    1.9751845    1.0504511    34.568399 
+215860000    300.43443   -159524.83    -159241.9   -155180.63    4.7443432  -0.36828707   -4.1404537    160.47313     1.972431    1.0484159    34.450676 
+215870000    300.87385    -159580.3   -159291.22   -155224.01    4.7535305  -0.36051732   -4.1522381    160.49566     1.974198    1.0585059    34.624408 
+215880000    302.48636   -159595.53   -159310.42   -155221.42    4.7483662  -0.34543822   -4.1546299    160.51165    1.9759169    1.0677352    34.720843 
+215890000    295.86141   -159646.49    -159386.3   -155386.85    4.7368633  -0.36253611   -4.1599675    160.51324    1.9834908    1.0684467    34.841573 
+215900000     299.5107   -159567.79   -159308.55   -155259.78    4.7454109  -0.34878032   -4.1600343    160.50538    1.9808465    1.0577324    34.654013 
+215910000    302.84382   -159505.35   -159233.33    -155139.5    4.7471834  -0.35756842   -4.1662374    160.50536    1.9836611    1.0888022    34.725686 
+215920000    296.97245   -159560.81    -159281.2   -155266.74    4.7577705  -0.36391009   -4.1661162    160.51493    1.9812923    1.0809898    34.890647 
+215930000    294.26779   -159518.88   -159262.49   -155284.58    4.7669556  -0.36854371    -4.184236    160.52413    1.9924708        1.067    34.897593 
+215940000    295.72961   -159513.32   -159240.97    -155243.3    4.7743301  -0.36749941   -4.2053148    160.52284    1.9934602    1.0781377    34.897993 
+215950000    300.85702   -159604.78   -159303.02   -155236.04    4.7846049  -0.36294985   -4.1943964    160.52356     1.995846    1.0684054    35.009756 
+215960000    302.43042   -159622.65    -159340.4   -155252.15    4.7735043  -0.36239752   -4.1954345    160.50736    1.9951833    1.0622862     34.89418 
+215970000    305.39468   -159632.88    -159343.3   -155214.98     4.779455  -0.36071989   -4.1931882     160.5041    1.9849217    1.0581895    35.025126 
+215980000    296.04238   -159583.42   -159306.05   -155304.16     4.774975   -0.3610982   -4.1909438    160.51116     2.000082    1.0583722    34.733757 
+215990000    302.60171   -159629.27   -159347.64   -155257.08    4.7746981  -0.36106548    -4.197103    160.49107    2.0131137    1.0463222    34.708514 
+216000000    301.23684   -159619.77   -159328.37   -155256.26    4.7723354  -0.36249115   -4.1762836    160.48428    2.0062373    1.0483288    34.836568 
+216010000    297.54331   -159587.75   -159317.13   -155294.95    4.7537765  -0.38060861   -4.1759008    160.48331    2.0077128    1.0349958    34.674494 
+216020000    304.13039   -159524.19   -159243.32   -155132.09    4.7612968  -0.39324231   -4.1770864    160.48885    1.9937192    1.0362247    34.706509 
+216030000    297.38385   -159572.32   -159299.95   -155279.92    4.7440273  -0.39426334   -4.1770229     160.4969     1.999065    1.0321179    34.840742 
+216040000     301.0351   -159582.95   -159290.43   -155221.05    4.7513997  -0.40657114   -4.1715767    160.48944    1.9888984    1.0380973    34.811521 
+216050000    295.34698   -159575.64   -159288.76   -155296.27    4.7525068  -0.39262001   -4.1761804    160.50544    1.9979232    1.0169742     34.74028 
+216060000    302.55087   -159620.03   -159319.74   -155229.86    4.7620511  -0.39320297    -4.159558    160.51371    2.0091605    1.0083963       34.766 
+216070000     302.9547   -159547.96   -159266.03    -155170.7    4.7679155  -0.40308824   -4.1466252    160.51851    2.0173478    1.0044988    34.710665 
+216080000    303.97011   -159623.45    -159330.6   -155221.54    4.7632001  -0.40408242   -4.1526316    160.50617    2.0163544    1.0038757    34.737874 
+216090000    295.03696   -159595.71   -159315.45   -155327.15    4.7705816  -0.40924746    -4.161264    160.52319    2.0047496    1.0044149    34.606045 
+216100000    301.49114    -159526.9   -159244.11   -155168.56    4.7690573   -0.4143692   -4.1661736    160.53328    2.0061076   0.99030425    34.590707 
+216110000    297.27285   -159613.67   -159331.05   -155312.52    4.7552205  -0.42038866   -4.1690469    160.53665    2.0062753   0.98494787    34.546661 
+216120000    294.65687   -159647.94   -159366.31   -155383.15    4.7532204   -0.4145561     -4.16577    160.53894    2.0038336    0.9908396    34.675246 
+216130000    303.39797   -159546.37   -159257.33      -155156    4.7507424  -0.41642868   -4.1735995    160.53259    1.9966961   0.99278593    34.686263 
+216140000    294.25145   -159580.72   -159306.31   -155328.62    4.7426013  -0.41889153   -4.1538928    160.51753    1.9875175   0.99360961    34.710788 
+216150000    301.74298   -159525.69      -159246   -155167.04    4.7407352  -0.42759795   -4.1407004    160.52151    1.9926656   0.98691095     34.69148 
+216160000    298.52862   -159481.02    -159183.9    -155148.4    4.7436421   -0.4285134   -4.1564857    160.52247    1.9908626   0.98482878    34.788742 
+216170000    300.83712   -159520.72   -159239.56   -155172.85    4.7512511  -0.42965363   -4.1555742    160.51437    1.9891034   0.97389397    34.669932 
+216180000    297.35701   -159539.81   -159250.41   -155230.74    4.7490242  -0.42766395   -4.1627362    160.52444    1.9870912   0.97433429    34.411699 
+216190000    301.71209   -159548.22   -159249.66   -155171.12    4.7560637  -0.42853088   -4.1560021    160.52591    2.0011469   0.95847446    34.591567 
+216200000    303.13568   -159599.35    -159319.7   -155221.92    4.7621463  -0.43854862   -4.1453757    160.53783    1.9906825   0.94905404    34.604093 
+216210000    302.98376   -159555.63   -159275.08   -155179.35    4.7727819  -0.42030414   -4.1478283    160.53814    1.9936904   0.95560791    34.568488 
+216220000    294.79284   -159492.73   -159190.73   -155205.72    4.7697146  -0.40931479   -4.1426289    160.54184    1.9923708   0.95966587    34.483205 
+216230000    307.45768   -159545.56    -159258.9    -155102.7    4.7713992  -0.40592378   -4.1516392    160.53116    1.9739081   0.96699673    34.374854 
+216240000     300.7148   -159591.65   -159299.35   -155234.29    4.7613559  -0.38841135   -4.1503118    160.52585    1.9730884   0.97391007    34.188388 
+216250000    293.63174   -159576.54   -159318.69   -155349.38    4.7626739  -0.38471264   -4.1453608    160.53197    1.9583696   0.97123622    34.408479 
+216260000    303.77715   -159564.83   -159276.04   -155169.59    4.7653787  -0.38147145    -4.134921    160.54242    1.9453707   0.96173034    34.464261 
+216270000    297.03347   -159627.99   -159332.81   -155317.52    4.7576143  -0.37039364   -4.1225755    160.53724    1.9579485   0.97030803    34.491649 
+216280000    298.25213   -159531.22   -159253.51   -155221.74    4.7631191  -0.37074032   -4.1300758    160.54136    1.9670806   0.96471937    34.430669 
+216290000    303.14806   -159518.46   -159224.68   -155126.74    4.7752846  -0.37975119   -4.1292853    160.52468    1.9540494   0.94801038    34.302012 
+216300000     301.8531   -159599.02   -159337.94    -155257.5    4.7881931  -0.36337849   -4.1277549    160.51004     1.948845   0.94283654     34.44055 
+216310000    301.61483   -159605.36   -159346.93   -155269.71    4.7833335  -0.36093567   -4.1305817    160.50594    1.9413139   0.93067603    34.349894 
+216320000    297.24757   -159622.18    -159352.2   -155334.01    4.7844851  -0.36579326   -4.1310966    160.51588     1.957555   0.92861981      34.3201 
+216330000    300.44521   -159545.28   -159250.15   -155188.74    4.7896544  -0.38220986   -4.1248226    160.50898    1.9632276   0.93352079    34.337697 
+216340000    297.94011   -159593.42   -159306.42   -155278.87    4.7815509  -0.37832003   -4.1176083    160.50701    1.9760363   0.93139909    34.306002 
+216350000    300.31606    -159597.4   -159317.78   -155258.11    4.7828992  -0.38231283   -4.1091973    160.49362    1.9798066   0.94856523    34.210116 
+216360000    295.66521   -159563.48   -159267.68   -155270.88    4.7830159  -0.38725966   -4.1062304    160.49069     1.978704   0.94459765    34.384935 
+216370000    299.12339   -159627.96   -159326.79   -155283.25     4.800558  -0.38089066   -4.1120741    160.50047    1.9857509   0.92637543    34.449726 
+216380000    293.66548   -159544.82   -159266.24   -155296.47    4.7940802  -0.37341433   -4.1052506    160.49683    1.9942906   0.93579574    34.511627 
+216390000    302.35658    -159624.7   -159369.46   -155282.22    4.7981591  -0.37460756   -4.1053332    160.49429    2.0089278   0.95513405    34.386185 
+216400000    297.62984   -159596.27   -159301.12   -155277.77    4.8000576  -0.37201819   -4.1094873    160.50414    1.9902478   0.94757481    34.384793 
+216410000    297.10858   -159556.26   -159279.05   -155262.75    4.8185019  -0.37846697   -4.1113503    160.48388    1.9933365   0.94769746    34.423605 
+216420000    299.81776   -159480.85   -159203.77   -155150.84    4.8101763  -0.37846395   -4.0998973    160.47951    1.9964923    0.9434588    34.274518 
+216430000    301.46862    -159560.5   -159274.51   -155199.26    4.8043904  -0.37948769   -4.1084465    160.47115    2.0006172   0.93684333    34.371694 
+216440000    307.24096   -159485.32   -159193.97    -155040.7    4.7963475  -0.38370735   -4.1160024    160.46405    2.0109001   0.95124882    34.210511 
+216450000    300.57538   -159549.56    -159248.7   -155185.53    4.7937193  -0.37222713   -4.1243463    160.47139    2.0121365   0.95904984    34.252435 
+216460000    296.28602   -159553.59   -159276.42   -155271.23    4.8118457  -0.37255633   -4.1068834    160.46031    2.0123589   0.94965569    34.305863 
+216470000    299.95498   -159629.21   -159337.43   -155282.64    4.7896068   -0.3744045   -4.1047723    160.45642    2.0091679   0.94372472    34.298817 
+216480000     300.3028   -159539.86   -159250.04   -155190.56    4.7835661  -0.37590955   -4.1027061      160.457     1.999566   0.95097664    34.223564 
+216490000    293.19645   -159537.16   -159253.19   -155289.77    4.7869101  -0.37438949   -4.0981398    160.46004    1.9973358   0.94926444    34.162636 
+216500000    301.55286   -159464.07   -159184.23   -155107.85    4.7786342  -0.37747247   -4.1009846    160.47012    2.0053907   0.94889427     34.25235 
+216510000    297.21441   -159562.07   -159285.28   -155267.55    4.7769115  -0.37822846   -4.1017165    160.46594    1.9988869   0.94833873    34.170901 
+216520000     302.9048   -159593.96   -159277.78   -155183.13    4.7690569  -0.38204808   -4.0924282    160.46979     1.988173   0.94754753    33.918576 
+216530000    301.87974   -159601.98   -159302.76   -155221.96    4.7822646  -0.38310117    -4.082458    160.45863    1.9902186   0.94713814    34.120089 
+216540000    297.39177    -159530.1   -159238.76   -155218.63    4.7832778  -0.38634626   -4.0872293    160.44862    1.9862428   0.95125201    34.313392 
+216550000    301.45308   -159610.81   -159305.78   -155230.75    4.7892831  -0.39170836   -4.0935146    160.44204     1.988417   0.95336595    34.213427 
+216560000    306.48174    -159584.5   -159285.63   -155142.62    4.7918855  -0.39363781   -4.0831708    160.43397    1.9818585   0.94510199    34.126855 
+216570000    306.94862   -159584.56   -159304.08   -155154.76    4.7949512  -0.39112164   -4.0805644    160.42818    1.9906972   0.94181125     34.06228 
+216580000     303.9852   -159646.75   -159339.02   -155229.75    4.7891047  -0.39791125   -4.0802513    160.42954    1.9951709   0.92907293    34.050649 
+216590000    303.79618   -159660.76   -159378.59   -155271.88    4.7865257  -0.39848947   -4.0944167     160.4248    1.9931605   0.92385927    34.041799 
+216600000    296.68021   -159551.37   -159279.53   -155269.01    4.7810533   -0.4175188    -4.092092    160.41889    2.0112732   0.93593588    34.194029 
+Loop time of 1629 on 8 procs for 1000000 steps with 4536 atoms
+
+Performance: 13.260 ns/day, 1.810 hours/ns, 613.874 timesteps/s
+99.6% CPU use with 8 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 95.769     | 620.13     | 1326.7     |1851.7 | 38.07
+Bond    | 0.14139    | 26.374     | 148.9      | 981.7 |  1.62
+Neigh   | 6.9949     | 7.1257     | 7.2235     |   3.5 |  0.44
+Comm    | 81.06      | 907.04     | 1457       |1662.9 | 55.68
+Output  | 0.15815    | 0.16128    | 0.1637     |   0.5 |  0.01
+Modify  | 6.089      | 27.023     | 56.565     | 364.7 |  1.66
+Other   |            | 41.14      |            |       |  2.53
+
+Nlocal:        567.000 ave        1229 max         127 min
+Histogram: 4 0 0 0 0 1 1 1 0 1
+Nghost:        1661.25 ave        2484 max         868 min
+Histogram: 4 0 0 0 0 0 0 0 1 3
+Neighs:        983.125 ave        6119 max           0 min
+Histogram: 6 0 1 0 0 0 0 0 0 1
+
+Total # of neighbors = 7865
+Ave neighs/atom = 1.7339065
+Ave special neighs/atom = 0.79012346
+Neighbor list builds = 1829
+Dangerous builds = 0
+unfix LAN
+unfix NVE0
+
+fix NVE all nve
+
+compute ke0 polymer ke/atom
+variable temp0 atom c_ke0/0.00297881
+compute ctemp polymer reduce ave v_temp0
+variable ptemp equal c_ctemp
+
+fix fix10 NP1 langevin 340.0 340.0 50.0 ${rand} tally yes
+fix fix10 NP1 langevin 340.0 340.0 50.0 21091133 tally yes
+fix fix11 NP2 langevin 295.0 295.0 50.0 ${rand}+1 tally yes
+fix fix11 NP2 langevin 295.0 295.0 50.0 21091133+1 tally yes
+
+compute ke1 polymer ke/atom
+compute t1 polymer temp
+compute pe1 polymer pe/atom
+compute st1 polymer stress/atom t1
+compute flux1 polymer heat/flux ke1 pe1 st1
+variable Jz1 equal c_flux1[3]/vol
+
+compute stk1 polymer stress/atom t1 ke
+compute stp1 polymer stress/atom t1 pair
+compute stb1 polymer stress/atom t1 bond
+compute sta1 polymer stress/atom t1 angle
+compute std1 polymer stress/atom t1 dihedral
+compute fluxk1 polymer heat/flux ke1 pe1 stk1
+compute fluxp1 polymer heat/flux ke1 pe1 stp1
+compute fluxb1 polymer heat/flux ke1 pe1 stb1
+compute fluxa1 polymer heat/flux ke1 pe1 sta1
+compute fluxd1 polymer heat/flux ke1 pe1 std1
+variable Jzk1 equal c_fluxk1[3]/vol
+variable Jzp1 equal c_fluxp1[3]/vol
+variable Jzb1 equal c_fluxb1[3]/vol
+variable Jza1 equal c_fluxa1[3]/vol
+variable Jzd1 equal c_fluxd1[3]/vol
+
+compute sti1 polymer stress/atom t1 improper
+compute stks1 polymer stress/atom t1 kspace
+compute fluxi1 polymer heat/flux ke1 pe1 sti1
+compute fluxks1 polymer heat/flux ke1 pe1 stks1
+variable Jzi1 equal c_fluxi1[3]/vol
+variable Jzks1 equal c_fluxks1[3]/vol
+
+compute kea all ke
+compute pea all pe
+fix fixke all ave/time 1 10000 10000 c_kea c_pea file keall${name}.data mode scalar
+fix fixke all ave/time 1 10000 10000 c_kea c_pea file keallPE_C100_L1run5.data mode scalar
+fix fixflux1 all ave/time 1 10000 10000 v_ptemp f_fix10 f_fix11  v_Jz1 v_Jzk1 v_Jzp1 v_Jzb1 v_Jza1 v_Jzd1 v_Jzi1 v_Jzks1 file ${name}_flux.txt mode scalar
+fix fixflux1 all ave/time 1 10000 10000 v_ptemp f_fix10 f_fix11  v_Jz1 v_Jzk1 v_Jzp1 v_Jzb1 v_Jza1 v_Jzd1 v_Jzi1 v_Jzks1 file PE_C100_L1run5_flux.txt mode scalar
+
+log ${name}_heat.log
+log PE_C100_L1run5_heat.log
