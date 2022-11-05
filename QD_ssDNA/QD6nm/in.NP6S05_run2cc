@@ -1,0 +1,105 @@
+# quantify structure
+    variable name index NP6S05_run2cc
+    log log.${name}
+
+units        real
+dimension 3
+boundary p p p
+atom_style	 full
+pair_style	 lj/cut/coul/long 10.0 10.0 
+pair_modify  mix arithmetic
+bond_style   harmonic
+angle_style  harmonic
+dihedral_style harmonic
+improper_style cvff
+kspace_style pppm 1.0e-4
+kspace_modify mesh 100 100 100
+read_data data.NP6S05_run2c 
+#read_restart res.S05relax2c
+#modify ssDNA LJ 0.1e
+pair_coeff	1	1	0.022800001	2.859784872
+pair_coeff	2	2	0.0148	3.6170488
+pair_coeff	3	3	0.0148	3.6170488
+pair_coeff	4	4	0.016699997	3.501232007
+pair_coeff	5	5	0.016699997	3.501232007
+pair_coeff	6	6	0.0038	2.449971454
+pair_coeff	7	7	0	0
+pair_coeff	8	8	0.0039	3.875409464
+pair_coeff	9	9	0.0039	3.875409464
+pair_coeff	10	10	0.022800001	2.859784872
+pair_coeff	11	11	0.019999768	3.741778233
+pair_coeff	12	12	0.022800001	2.859784872
+pair_coeff	13	13	0.004297591	3.3677544
+pair_coeff	14	14	0	0
+pair_coeff	15	15	0.160714286	1.897438886
+#modify the ZnS-DNA interface interaction
+pair_coeff	1	16	0.668490856	1.436142436
+pair_coeff	2	16	0.53859075	1.8147744
+pair_coeff	3	16	0.53859075	1.8147744
+pair_coeff	4	16	0.572118825	1.756866003
+pair_coeff	5	16	0.572118825	1.756866003
+pair_coeff	6	16	0.272910246	1.231235727
+pair_coeff	7	16	0	0.00625
+pair_coeff	8	16	0.27647783	1.943954732
+pair_coeff	9	16	0.27647783	1.943954732
+pair_coeff	10	16	0.668490856	1.436142436
+pair_coeff	11	16	0.626095407	1.877139117
+pair_coeff	12	16	0.668490856	1.436142436
+pair_coeff	13	16	10.0 1.6901272 # 0.290228842	1.6901272
+pair_coeff	14	16	0	0.00625
+pair_coeff	15	16	1.774823935	0.954969443
+
+variable vtimpstep equal 1
+variable Pdamp  equal  ${vtimpstep}*1000
+variable Tdamp  equal  ${vtimpstep}*100
+
+restart 100000 res.1 res.2
+dump 1 all xyz 100000 ${name}.xyz
+dump_modify 1 element O C C N N H H C C O P O S H Na Zn Si 
+
+thermo 1000
+timestep ${vtimpstep}  
+neighbor           2.5 bin
+neigh_modify every 1 delay 0 check yes 
+
+group ZnS type 16 17
+group ions type 15
+group ssdna type <> 1 15
+group DNA type <> 1 14
+
+##need to compute Rg of DNA, dump P S atom coordinates
+group Patom type 11
+group Satom type 13
+dump d1 Patom  custom 100000 ${name}P.txt id mol x y z ix iy iz 
+dump d2 Patom  custom 100000 ${name}S.txt id mol x y z ix iy iz 
+compute c4 DNA gyration
+variable Rg equal c_c4
+
+compute c1 ZnS com
+compute c2 DNA com
+compute c3 ZnS group/group DNA
+compute ke ssdna ke/atom
+variable tc atom c_ke/0.00297881
+compute ctemp ssdna reduce ave v_tc
+thermo_style custom step temp c_ctemp pe etotal press c_c1[1]  c_c1[2] c_c1[3] c_c2[1]  c_c2[2] c_c2[3] epair c_c3 v_Rg 
+#compute c2 all chunk/atom molecule nchunk once limit 0 ids once compress no
+#compute c3 all gyration/chunk c2
+#fix fix12 all ave/time 1 1000 1000 c_c3 file Rg_${name}.data mode vector
+
+dielectric 80
+
+#fix drag1 sulfer drag  48.787976 48.727209 48.75609 0.5 17.5
+#fix NVE ssdna nve
+#fix LAN ssdna langevin 300 300 ${Tdamp}  20112777  
+#run     2000000
+#unfix LAN
+#unfix NVE
+#unfix drag1
+
+fix NVE ssdna nve
+fix LAN ssdna langevin 300 300 ${Tdamp}  21081124
+run     2000000
+unfix LAN
+unfix NVE
+
+write_data data.${name}
