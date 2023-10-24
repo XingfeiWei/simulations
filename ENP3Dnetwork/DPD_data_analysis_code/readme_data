@@ -1,0 +1,12 @@
+Trajectory data files are to large to attache here,
+run the LAMMPS simulations to generate these files.
+for example run in.T2500KHEXR2 to generate:
+'T2500KHEXR2au.txt'
+'T2500KHEXR2pah.txt'
+'log.T2500KHEXR2'
+
+or email Xingfei Wei xwei20@jhu.edu for data files
+
+cite:
+https://link.aps.org/doi/10.1103/PhysRevResearch.5.L022057
+https://aip.scitation.org/doi/abs/10.1063/5.0048898
