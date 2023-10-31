@@ -4,6 +4,6 @@ Title: Heat Transfer Enhancement in Tree-Structured Polymer Linked Gold Nanopart
 
 Authors: Xingfei Wei and Rigoberto Hernandez
 
-https: 
+https://pubs.acs.org/doi/full/10.1021/acs.jpclett.3c02367
 
 Email contact Xingfei: xwei20@jhu.edu
