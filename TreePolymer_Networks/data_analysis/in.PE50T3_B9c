@@ -1,0 +1,156 @@
+variable name index PE50T3_B9c #inverse
+variable rand equal 2301297
+variable T1 equal 340
+variable T2 equal 295
+log log.${name}
+# ----------------- Init Section -----------------
+
+    units real
+    atom_style full
+    bond_style hybrid harmonic
+    angle_style hybrid harmonic
+    dihedral_style hybrid opls
+    pair_style hybrid lj/cut/coul/cut 10.0 10.0 lj/cut 10.0 morse 8.0 
+    pair_modify mix arithmetic
+    special_bonds lj/coul 0.0 0.0 0.5
+    #kspace_style pppm 0.0001
+
+# ----------------- Atom Definition Section -----------------
+
+#read_data data.PE50T3_2
+read_restart res.PE50T3_B9
+# ----------------- Settings Section -----------------
+
+    pair_coeff 1 1 lj/cut/coul/cut 0.066 3.5
+    pair_coeff 2 2 lj/cut/coul/cut 0.03 2.5
+    pair_coeff 3 3 lj/cut/coul/cut 0.066 3.5
+    pair_coeff 4 4 lj/cut/coul/cut 0.25 3.55
+    pair_coeff 5 5  lj/cut 5.29 2.951  #Au-other LJ 0.039 2.935  #Au-Au morse 10.954 1.583 3.024 8 
+    pair_coeff 4 5 morse 8.763 1.47 2.65 8    #Au-S
+pair_coeff  1   5   lj/cut 0.050734604 3.2175  
+pair_coeff  2   5   lj/cut 0.050734604 3.2175
+pair_coeff  3   5   lj/cut 0.034205263 2.7175
+
+    bond_coeff 1 harmonic 268.0 1.529  #c2-c2
+    bond_coeff 2 harmonic 340.0 1.09  #c2-h
+    bond_coeff 3 harmonic 222.0 1.81   #c2-s
+    bond_coeff 4 harmonic 268.0 1.529  #c2-c1
+    bond_coeff 5 harmonic 340.0 1.09  #c1-h
+
+    angle_coeff 1 harmonic 37.5 110.7  #c2-c2-h
+    angle_coeff 2 harmonic 50.0 108.6  #c2-c2-s
+    angle_coeff 3 harmonic 33.0 107.8  #h-c2-h
+    angle_coeff 4 harmonic 35.0 109.5  #h-c2-s
+    angle_coeff 5 harmonic 58.35 112.7  #c2-c2-c2
+    angle_coeff 6 harmonic 37.5 110.7   #c1-c2-h
+    angle_coeff 7 harmonic 58.35 112.7  #c2-c2-c1
+    angle_coeff 8 harmonic 37.5 110.7   #c2-c1-h
+    angle_coeff 9 harmonic 58.35 112.7  #c2-c1-c2
+
+    dihedral_coeff 1 opls 0.0 0.0 0.3 0.0          #h-c2-c2-h
+    dihedral_coeff 2 opls 0.0 0.0 0.3 0.0         #c2-c2-c2-h
+    dihedral_coeff 3 opls 0.0 0.0 0.452 0.0         #h-c2-c2-s
+    dihedral_coeff 4 opls 1.262 -0.198 0.465 0.0    #c2-c2-c2-s
+    dihedral_coeff 5 opls 0.0 0.0 0.28 0.0           #c2-c2-s-hs
+    dihedral_coeff 6 opls 0.0 0.0 0.28 0.0           #h-c2-s-hs
+    dihedral_coeff 7 opls 1.3 -0.05 0.2 0.0         #c2-c2-c2-c2
+    dihedral_coeff 8 opls 1.3 -0.05 0.2 0.0         #c2-c2-c2-c1
+    dihedral_coeff 9 opls 0.0 0.0 0.3 0.0       #c1-c2-c2-h
+    dihedral_coeff 10 opls 0.0 0.0 0.3 0.0           #h-c2-c1-h
+    dihedral_coeff 11 opls 0.0 0.0 0.3 0.0           #h-c2-c1-c2
+    dihedral_coeff 12 opls 0.0 0.0 0.3 0.0      #c2-c2-c1-h
+    dihedral_coeff 13 opls 1.3 -0.05 0.2 0.0         #c2-c2-c1-c2
+
+# ----------------- Run Section -----------------
+restart 500000 res.1b res.2b
+dump 1 all xyz 500000 ${name}.xyz
+dump_modify 1 element C H C S Au 
+#write_data data.
+variable vtimpstep equal 0.25
+variable Pdamp  equal  ${vtimpstep}*1000
+variable Tdamp  equal  ${vtimpstep}*100
+timestep ${vtimpstep}  
+
+neighbor           2.5 bin
+neigh_modify every 1 delay 0 check yes
+
+group polymer molecule 1
+group NP1 molecule 2
+group NP2 molecule 3 
+group NP3 molecule 4 
+group NP4 molecule 5 
+group NP5 molecule 6 
+group NP6 molecule 7
+group NP7 molecule 8 
+group NP8 molecule 9 
+group NP9 molecule 10 
+
+compute c4 polymer gyration
+variable Rg equal c_c4
+
+compute c1 NP1 com
+compute c2 NP2 com
+
+thermo 10000
+thermo_style custom step temp epair pe etotal c_c1[1] c_c1[2]  c_c1[3] c_c2[1] c_c2[2]  c_c2[3] v_Rg 
+
+fix NVE all nve
+
+compute ke0 polymer ke/atom
+variable temp0 atom c_ke0/0.00297881
+compute ctemp polymer reduce ave v_temp0
+variable ptemp equal c_ctemp
+
+fix fix1 NP1 langevin ${T1} ${T1} 50.0 ${rand}+1 tally yes
+fix fix2 NP2 langevin ${T2} ${T2} 50.0 ${rand}+2 tally yes
+fix fix3 NP3 langevin ${T2} ${T2} 50.0 ${rand}+3 tally yes
+fix fix4 NP4 langevin ${T2} ${T2} 50.0 ${rand}+4 tally yes
+fix fix5 NP5 langevin ${T2} ${T2} 50.0 ${rand}+5 tally yes
+fix fix6 NP6 langevin ${T2} ${T2} 50.0 ${rand}+6 tally yes
+fix fix7 NP7 langevin ${T2} ${T2} 50.0 ${rand}+7 tally yes
+fix fix8 NP8 langevin ${T2} ${T2} 50.0 ${rand}+8 tally yes
+fix fix9 NP9 langevin ${T2} ${T2} 50.0 ${rand}+9 tally yes
+
+compute ke1 polymer ke/atom
+compute t1 polymer temp
+compute pe1 polymer pe/atom
+compute st1 polymer stress/atom t1
+compute flux1 polymer heat/flux ke1 pe1 st1
+variable Jz1 equal c_flux1[3]/vol
+
+compute stk1 polymer stress/atom t1 ke
+compute stp1 polymer stress/atom t1 pair
+compute stb1 polymer stress/atom t1 bond
+compute sta1 polymer stress/atom t1 angle
+compute std1 polymer stress/atom t1 dihedral
+compute fluxk1 polymer heat/flux ke1 pe1 stk1
+compute fluxp1 polymer heat/flux ke1 pe1 stp1
+compute fluxb1 polymer heat/flux ke1 pe1 stb1
+compute fluxa1 polymer heat/flux ke1 pe1 sta1
+compute fluxd1 polymer heat/flux ke1 pe1 std1
+variable Jzk1 equal c_fluxk1[3]/vol
+variable Jzp1 equal c_fluxp1[3]/vol
+variable Jzb1 equal c_fluxb1[3]/vol
+variable Jza1 equal c_fluxa1[3]/vol
+variable Jzd1 equal c_fluxd1[3]/vol
+
+compute sti1 polymer stress/atom t1 improper
+compute stks1 polymer stress/atom t1 kspace
+compute fluxi1 polymer heat/flux ke1 pe1 sti1
+compute fluxks1 polymer heat/flux ke1 pe1 stks1
+variable Jzi1 equal c_fluxi1[3]/vol
+variable Jzks1 equal c_fluxks1[3]/vol
+
+compute kea all ke
+compute pea all pe
+fix fixke all ave/time 1 10000 10000 c_kea c_pea file keall${name}.data mode scalar
+fix fixflux1 all ave/time 1 10000 10000 v_ptemp f_fix1 f_fix2 f_fix3 f_fix4 f_fix5  f_fix6 f_fix7 f_fix8 f_fix9 v_Jz1 v_Jzk1 v_Jzp1 v_Jzb1 v_Jza1 v_Jzd1 v_Jzi1 v_Jzks1 file ${name}_flux.txt mode scalar
+
+log ${name}_heat.log
+thermo 10000
+thermo_style custom step temp epair pe etotal c_c1[1] c_c1[2]  c_c1[3] c_c2[1] c_c2[2]  c_c2[3] v_Rg 
+thermo_modify flush yes
+run 10000000
+unfix NVE
+
+write_data data.${name}
