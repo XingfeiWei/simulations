@@ -1,0 +1,78 @@
+# LJ WCA DNA origami-QD assembly 300K assembly 
+variable name index ori2A1to1_run3c11
+log log.${name}
+variable        temp index 300.0
+variable        mu   index 0
+variable	    disp index 10
+variable	    rand1 equal 1214
+variable	    rand2 equal 1231
+
+units		real
+atom_style	full
+dimension	3
+
+pair_style lj/cut 100.0
+
+read_data data.ori2A1to1_run3c10
+#read_restart res.ori2A1to1_run3c10
+# WCA potential
+pair_coeff	 1 1 10.0 17.8179825964611 20
+pair_coeff	 1 2 10.0 17.8179825964611 20
+pair_coeff	 1 3 10.0 48.9994521402682 55
+pair_coeff	 1 4 10.0 31.1814695438070 35
+pair_coeff	 2 2 10.0 62.3629390876140 70 #35.6359651929222 40
+pair_coeff	 2 3 10.0 48.9994521402682 55
+#pair_coeff	 2 4 10.0 17.8179825964611 20
+pair_coeff	 3 3 10.0 80.1809216840752 90
+pair_coeff	 3 4 10.0 62.3629390876140 70
+pair_coeff	 4 4 10.0 44.5449564911529 50
+
+pair_coeff	 2 4 25.0 17.8179825964611 100
+
+pair_modify shift yes
+
+mass 1   7200 #DNA bead d=2nm
+mass 2   1500 #biotin d=2nm
+mass 3 960000 #QD d=9nm
+mass 4  60000 #SV d=5nm
+
+#mass 1   720 #DNA bead d=2nm
+#mass 2   150 #biotin d=2nm
+#mass 3 960 #QD d=9nm
+#mass 4  60 #SV d=5nm
+
+restart 5000000 res.1 res.2
+
+#write_data data.ori2A1to1_run3c10
+
+dump 1 all xyz 5000000 ${name}.xyz
+dump_modify 1 element C N Zn O
+
+# multi neighbor and comm for efficiency
+neighbor	2.5 bin
+neigh_modify	every 1 delay 0 check yes page 1000000 one 20000
+#comm_modify     mode multi
+
+group DNA type 1 2
+group QD type 3 4
+
+comm_modify cutoff 850
+compute c1 all rdf 400 2 2 2 3 2 4 3 4 cutoff 800
+fix file1  all ave/time 1000 1000 1000000 c_c1[*] file rdf_${name}.txt mode vector 
+#compute c2 DNA rdf 800 cutoff 800
+#fix file2  DNA  ave/time 1000 1000 1000000 c_c2[*] file rdf_${name}_DNA.txt mode vector 
+
+compute ag1 all cluster/atom 25
+dump 2 all custom 10000000 ${name}_cluster.txt id mol type x y z c_ag1
+
+timestep	100
+thermo 10000
+fix R0 all rigid molecule langevin ${temp} ${temp} 10000.0  ${rand1}
+fix NVE0 all nve
+fix LAN0 all langevin ${temp} ${temp} 10000.0 ${rand2}
+run     500000000
+unfix LAN0
+unfix NVE0
+unfix R0
+
+write_data data.${name}
