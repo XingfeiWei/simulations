@@ -1,0 +1,155 @@
+  variable name index Q0L31T300K_F
+    log log.${name}
+    variable Tset equal 300
+    variable T1 equal  340
+    variable T2 equal  295
+    variable rand1 equal 23082411
+# ----------------- Init Section -----------------
+
+    units real
+    atom_style full
+    bond_style  harmonic
+    angle_style  harmonic
+    dihedral_style hybrid opls fourier 
+    improper_style  harmonic
+    pair_style hybrid lj/cut/coul/cut 10.0 10.0 lj/cut 10.0 morse 8.0 
+    pair_modify mix arithmetic
+    special_bonds lj/coul 0.0 0.0 0.5
+    #kspace_style pppm 0.0001
+
+# ----------------- Atom Definition Section -----------------
+
+read_data data.AuSAM_300K
+#read_restart res.AuSAM1c
+# ----------------- Settings Section -----------------
+
+pair_coeff  1 1 lj/cut/coul/cut 0.066 3.5
+pair_coeff  2 2 lj/cut/coul/cut 0.03  2.5
+pair_coeff  3 3 lj/cut/coul/cut 0.25  3.55
+pair_coeff  4 4 lj/cut/coul/cut 0.07  3.55
+pair_coeff  5 5 lj/cut/coul/cut 0.03  2.42
+pair_coeff  6 6 lj/cut/coul/cut 0 0
+pair_coeff  7 7 lj/cut/coul/cut 0.481836  3.11  
+pair_coeff  8 8 lj/cut/coul/cut 5.29  2.951    #AuNP
+
+pair_coeff  1 8 lj/cut 0.050734604 3.2175
+pair_coeff  2 8 lj/cut 0.034205263 2.7175
+pair_coeff  3 8 morse 8.763 1.47 2.65 8    #Au-S
+pair_coeff  4 8 lj/cut 0.052249402 3.2425
+pair_coeff  5 8 lj/cut 0.034205263 2.6775
+pair_coeff  6 8 lj/cut 0 1.4675
+pair_coeff  7 8 lj/cut 0.137082472 3.0225
+
+dihedral_coeff  1 opls  1.3 -0.05 0.2 0                   
+dihedral_coeff  2 opls  0 0 0.3 0                   
+dihedral_coeff  3 opls  1.262 -0.198  0.465 0                   
+dihedral_coeff  4 opls  0 0 0.3 0                   
+dihedral_coeff  5 opls  0 0 0.452 0                   
+dihedral_coeff  6 opls  -1.697  -0.456  0.585 0                   
+dihedral_coeff  7 opls  0 0 0.462 0                   
+dihedral_coeff  8 opls  0 0 0 0                   
+dihedral_coeff  9 opls  0 0 0 0                   
+dihedral_coeff  10  opls  0 7.25  0 0                   
+dihedral_coeff  11  opls  0 7.25  0 0                   
+dihedral_coeff  12  opls  0 7.25  0 0                   
+dihedral_coeff  13  opls  0 7.25  0 0                   
+dihedral_coeff  14  opls  0 7.25  0 0                   
+dihedral_coeff  15  fourier 1 0.017208413 5 -180    #CA-cpc-cpc-CA  LAMMPS  Fourier type  dihedral  K=0.017208413,  d=  -180, n=5
+
+# ----------------- save data file -----------------
+#write_data data.AuSAM_200K
+
+# ----------------- Run Section -----------------
+group aunp1 molecule 49
+group aunp2 molecule 50
+group sam subtract all aunp1 aunp2
+group aunp1S id <> 7633 7824
+group aunp1F id <> 4369 4560 
+group aunp2S id <> 7825 8016
+group aunp2F id <> 11089 11280
+group fixNP subtract all aunp1F aunp2F
+group NP1 id <> 4561 5520
+group NP2 id <> 10129 11088 
+
+restart 100000 res.1f res.2f
+
+dump 1 all xyz 100000 ${name}.xyz
+dump_modify 1 element C H S C H He Fe Au
+
+variable vtimpstep equal 0.25
+variable Pdamp  equal  ${vtimpstep}*1000
+variable Tdamp  equal  ${vtimpstep}*100
+timestep ${vtimpstep}  
+neighbor           2.5 bin
+neigh_modify every 1 delay 0 check yes
+
+thermo 1000
+
+#group acetylene id 60 62 64 65
+#fix rig1 acetylene rigid single
+#fix fE all efield -0.01 0.0 0.0
+
+fix NVE0 fixNP nve
+fix LAN0 fixNP langevin ${Tset} ${Tset} ${Tdamp}  ${rand1}
+run     400000
+unfix LAN0
+unfix NVE0
+
+#write_data data.${name}
+
+fix NVE fixNP nve
+
+compute ke0 sam ke/atom
+variable temp0 atom c_ke0/0.00297881
+compute ctemp sam reduce ave v_temp0
+variable ptemp equal c_ctemp
+
+fix fix1 NP1 langevin ${T1} ${T1} ${Tdamp} ${rand1}+1 tally yes
+fix fix2 NP2 langevin ${T2} ${T2} ${Tdamp} ${rand1}+2 tally yes
+
+compute ke1 sam ke/atom
+compute t1 sam temp
+compute pe1 sam pe/atom
+compute st1 sam stress/atom t1
+compute flux1 sam heat/flux ke1 pe1 st1
+variable Jz1 equal c_flux1[1]/vol
+
+compute stk1 sam stress/atom t1 ke
+compute stp1 sam stress/atom t1 pair
+compute stb1 sam stress/atom t1 bond
+compute sta1 sam stress/atom t1 angle
+compute std1 sam stress/atom t1 dihedral
+compute fluxk1 sam heat/flux ke1 pe1 stk1
+compute fluxp1 sam heat/flux ke1 pe1 stp1
+compute fluxb1 sam heat/flux ke1 pe1 stb1
+compute fluxa1 sam heat/flux ke1 pe1 sta1
+compute fluxd1 sam heat/flux ke1 pe1 std1
+variable Jzk1 equal c_fluxk1[1]/vol
+variable Jzp1 equal c_fluxp1[1]/vol
+variable Jzb1 equal c_fluxb1[1]/vol
+variable Jza1 equal c_fluxa1[1]/vol
+variable Jzd1 equal c_fluxd1[1]/vol
+
+compute sti1 sam stress/atom t1 improper
+compute stks1 sam stress/atom t1 kspace
+compute fluxi1 sam heat/flux ke1 pe1 sti1
+compute fluxks1 sam heat/flux ke1 pe1 stks1
+variable Jzi1 equal c_fluxi1[1]/vol
+variable Jzks1 equal c_fluxks1[1]/vol
+
+compute kea all ke
+compute pea all pe
+fix fixke fixNP ave/time 1 10000 10000 c_kea c_pea file keall${name}.data mode scalar
+fix fixflux1 fixNP ave/time 1 10000 10000 v_ptemp f_fix1 f_fix2  v_Jz1 v_Jzk1 v_Jzp1 v_Jzb1 v_Jza1 v_Jzd1 v_Jzi1 v_Jzks1 file ${name}_flux.txt mode scalar
+
+log ${name}_heat.log
+thermo 10000
+thermo_style custom step temp epair pe etotal f_fix1 f_fix2 c_ctemp 
+thermo_modify flush yes
+run 40000000
+unfix NVE
+
+#unfix fE
+#unfix rig1
+
+write_data data.${name}_NEMD
